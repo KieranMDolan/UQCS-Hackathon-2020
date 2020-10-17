@@ -16,8 +16,8 @@ const BEAT_RADIUS = 20;
 let INCREMENT_SIZE = 4;
 
 // Canvas constants
-const canvasWidth = window.innerWidth;
-const canvasHeight = window.innerHeight;
+const canvasWidth = window.innerWidth/2;
+const canvasHeight = window.innerHeight/1.1;
 const screenWH = { width: canvasWidth, height: canvasHeight };
 
 // scoring range constants
@@ -101,7 +101,7 @@ const Main = () => {
 
     function drawScore() {
       ctx.font = '64px Verdana';
-      ctx.fillText(score, canvasWidth / 2, 100);
+      ctx.fillText(score + " JOULES", canvasWidth / 3.5, 100);
     }
 
     function update() {
