@@ -23,6 +23,10 @@ const screenWH = { width: canvasWidth, height: canvasHeight };
 const START_RANGE = canvasHeight / 2 - SCALE * HEART_OFFSET_Y;
 const END_RANGE = canvasHeight / 2 + SCALE * HEART_OFFSET_Y;
 
+// helper random function
+function randomIntFromInterval(min, max) { // min and max included 
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
 // function to fill beat coordinates with dummy data
 const getBeatsArr = () => {
   const X_POINT = canvasWidth / 2 - BEAT_RADIUS / 2;
@@ -30,7 +34,7 @@ const getBeatsArr = () => {
   let coordArr = [];
   for (let i = 0; i < 20; i++) {
     coordArr.push({ x: X_POINT, y: yPoint, hittable: true, shouldDraw: true});
-    yPoint -= 100;
+    yPoint -= randomIntFromInterval(40, 130);
   }
   coordArr.reverse();
   return coordArr;
@@ -81,6 +85,9 @@ const Main = () => {
         if (beat.y > END_RANGE && beat.hittable) {
           beat.hittable = false;
           TRACKED_INDEX--;
+        }
+        if ( beat.y > canvasHeight ) {
+          beat.shouldDraw = false;
         }
       });
     }
