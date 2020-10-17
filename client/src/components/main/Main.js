@@ -7,12 +7,13 @@ let heartImage = new Image();
 heartImage.src = heartImageSrc;
 
 // Heart constants
-const SCALE = 0.4;
+const SCALE = 0.2;
 const HEART_OFFSET_Y = heartImage.height / 2;
 const HEART_OFFSET_X = heartImage.width / 2;
 
 // Beat constants
 const BEAT_RADIUS = 20;
+let INCREMENT_SIZE = 4;
 
 // Canvas constants
 const canvasWidth = window.innerWidth;
@@ -25,6 +26,9 @@ const END_RANGE = canvasHeight / 2 + SCALE * HEART_OFFSET_Y;
 
 // scoring variables
 let comboCount = 0;
+let comboMax = 30;
+let scoreFactor = 1;
+let score = 0;
 
 // helper random function
 function randomIntFromInterval(min, max) {
@@ -36,9 +40,9 @@ const getBeatsArr = () => {
   const X_POINT = canvasWidth / 2 - BEAT_RADIUS / 2;
   let yPoint = 0;
   let coordArr = [];
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 200; i++) {
     coordArr.push({ x: X_POINT, y: yPoint, hittable: true, shouldDraw: true });
-    yPoint -= randomIntFromInterval(40, 130);
+    yPoint -= randomIntFromInterval(30, 100);
   }
   coordArr.reverse();
   return coordArr;
@@ -65,6 +69,7 @@ const Main = () => {
       drawBeats();
       // draw combo count
       drawComboCount();
+      drawScore();
     }
 
     function drawHeart() {
@@ -86,17 +91,22 @@ const Main = () => {
     }
 
     function drawComboCount() {
-      ctx.font = '64px Verdana';
+      ctx.font = '48px Verdana';
       ctx.fillText(
         'x' + comboCount,
-        canvasWidth / 2 + SCALE * HEART_OFFSET_X - 40,
+        canvasWidth / 2 + SCALE * HEART_OFFSET_X - 30,
         canvasHeight / 2 - SCALE * HEART_OFFSET_Y + 30
       );
     }
 
+    function drawScore() {
+      ctx.font = '64px Verdana';
+      ctx.fillText(score, canvasWidth / 2, 100);
+    }
+
     function update() {
       beatCoordsArr.forEach((beat) => {
-        beat.y += 1;
+        beat.y += INCREMENT_SIZE;
         if (beat.y > END_RANGE && beat.hittable) {
           comboCount = 0;
           beat.hittable = false;
@@ -119,12 +129,29 @@ const Main = () => {
     gameLoop();
   }, []);
 
+  const increaseScore = () => {
+    let toAdd;
+    if (comboCount === 0) {
+      toAdd = 1 * scoreFactor;
+    } else {
+      toAdd = 1 * scoreFactor * comboCount;
+    }
+    score += toAdd;
+  };
+
+  const increaseComboCount = () => {
+    if (comboCount < comboMax) {
+      comboCount++;
+    }
+  }
+
   const handleKeyPress = (event) => {
     if (event.key === ' ' && beatCoordsArr.length !== 0) {
       let y = beatCoordsArr[TRACKED_INDEX].y;
       // change to tracked index
       if (y >= START_RANGE && y <= END_RANGE) {
-        comboCount++;
+        increaseScore();
+        increaseComboCount();
         beatCoordsArr[TRACKED_INDEX].shouldDraw = false;
         beatCoordsArr[TRACKED_INDEX].hittable = false;
         TRACKED_INDEX--;
