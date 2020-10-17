@@ -1,0 +1,13 @@
+[
+    {
+        "name": "All you can eat buffet",
+        "flavour": "Indulge in pure gluttony",
+        "initial_cost": 10000
+    },
+    {
+        "name": "Defibrillator",
+        "flavour": "Jumpstart the day",
+        "initial_cost": 50000
+    }
+
+]
