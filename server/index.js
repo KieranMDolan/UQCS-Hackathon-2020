@@ -28,18 +28,28 @@ app.use(helmet());
 app.use(express.static(__dirname + 'public')); //Serves resources from public folder
 
 app.get('/', async (req, res) => {
-    const result =  await db.collection("users").insertOne({name: "simp", joules: 1,  passive_items: [], max_combo: 0, prestege_items: [], });
-    await db.collection("passive_items").insertOne({name: })
-    return res.json({ message: "HELLO" })
+    res.sendFile(path.join(__dirname+'/client/build/index.html'));
 })
 
+app.get('/', async(req, res))
 io.on('connection', (socket) => {
     console.log('a user connected');
     socket.on('login', (name) => {
-        db.collection("users").findAndModify({
-            query:
-            name
+        const user = db.collection("users").findAndModify({
+            query: {name}
+            update: {
+                $setOnInsert: {
+                    // name, 
+                    joules: 1, 
+                    passive_items: [], 
+                    max_combo: 0, 
+                    prestege_items: [], 
+                }
+            }
+            new: true,   // return new doc if one is upserted
+            upsert: true // insert the document if it does not exist
         });
+        console.log(user);
         socket.on('update', (payload)=> {
             db.collection("users").find({id:payload._id});
         });
