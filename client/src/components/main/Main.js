@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import heartImageSrc from '../../assets/heart.png';
+import { useKeyPress } from '../../hooks/useKeyPress';
 
 // load image for heart
 let heartImage = new Image();
@@ -32,6 +33,7 @@ const getBeatsArr = () => {
 let beatCoordsArr = getBeatsArr();
 
 const Main = () => {
+  let spacePressed = useKeyPress(' ');
   const canvasRef = useRef(null);
 
   // game loop functionality
@@ -81,6 +83,13 @@ const Main = () => {
     gameLoop();
   }, []);
 
+  const handleKeyPress = (event) => {
+    if(event.key === ' '){
+      console.log('space pressed')
+      beatCoordsArr = beatCoordsArr.slice(0, beatCoordsArr.length - 1);
+    }
+  }
+
   return (
     <canvas
       className="App-canvas"
@@ -89,7 +98,7 @@ const Main = () => {
       height={canvasHeight}
       // onClick={handleCanvasClick}
       tabIndex={0}
-      // onKeyPress={handleKeyPress}
+      onKeyPress={handleKeyPress}
     />
   );
 };
