@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import heartImageSrc from '../assets/heart.png';
+import { useKeyPress } from './useKeyPress';
 
 // load image for heart
 let heartImage = new Image();
@@ -38,7 +39,7 @@ function drawBeat(ctx, location) {
 export function useCanvas() {
   const canvasRef = useRef(null);
   const [coordinates, setCoordinates] = useState([]);
-
+  const spacePressed = useKeyPress(' ');
   // increment beats
   const incrementBeats = () => {
     let coords = [...coordinates];

@@ -1,41 +1,85 @@
-import React, { useEffect } from 'react';
-import { useCanvas, BEAT_RADIUS } from '../../hooks/useCanvas';
-import { useKeyPress } from '../../hooks/useKeyPress';
+import React, { useEffect, useRef } from 'react';
+import heartImageSrc from '../../assets/heart.png';
 
-const BEATS_PER_MINUTE = 120;
-const INCREMENT_SIZE = 1;
+// load image for heart
+let heartImage = new Image();
+heartImage.src = heartImageSrc;
+
+// Heart constants
+const SCALE = 0.4;
+const HEART_OFFSET_Y = heartImage.height / 2;
+const HEART_OFFSET_X = heartImage.width / 2;
+
+// Beat constants
+const BEAT_RADIUS = 20;
+const canvasWidth = window.innerWidth;
+const canvasHeight = window.innerHeight;
+const screenWH = { width: canvasWidth, height: canvasHeight };
+
+// function to fill beat coordinates with dummy data
+const getBeatsArr = () => {
+  const X_POINT = canvasWidth / 2 - BEAT_RADIUS / 2;
+  let yPoint = 0;
+  let coordArr = [];
+  for (let i = 0; i < 20; i++) {
+    coordArr.push({ x: X_POINT, y: yPoint });
+    yPoint -= 100;
+  }
+  coordArr.reverse();
+  return coordArr;
+};
+
+let beatCoordsArr = getBeatsArr();
 
 const Main = () => {
-  const [
-    coordinates,
-    setCoordinates,
-    canvasRef,
-    canvasWidth,
-    canvasHeight,
-  ] = useCanvas();
+  const canvasRef = useRef(null);
 
-  // fill beat coordinates
-  const fillBeats = () => {
-    const X_POINT = canvasWidth / 2 - BEAT_RADIUS / 2;
-    let yPoint = 0;
-    let coordArr = [];
-    for (let i = 0; i < 20; i++) {
-      coordArr.push({ x: X_POINT, y: yPoint });
-      yPoint -= 100;
-    }
-    setCoordinates(coordArr);
-  };
-
-  // run when component mounts to fill coordinates state with beats
+  // game loop functionality
   useEffect(() => {
-    fillBeats();
-  }, []);
+    const canvasObj = canvasRef.current;
+    let ctx = canvasObj.getContext('2d');
 
-  const handleCanvasClick = (event) => {
-    const currentCoord = { x: event.clientX, y: event.clientY };
-    console.log(currentCoord);
-    // setCoordinates([...coordinates, currentCoord]);
-  };
+    function draw() {
+      // clear rectangle
+      ctx.clearRect(0, 0, screenWH.width, screenWH.height);
+      // draw heart
+      drawHeart();
+      // loop through coords and draw beats
+      drawBeats();
+    }
+
+    function drawHeart() {
+      ctx.drawImage(
+        heartImage,
+        canvasWidth / 2 - SCALE * HEART_OFFSET_X,
+        canvasHeight / 2 - SCALE * HEART_OFFSET_Y,
+        heartImage.width * SCALE,
+        heartImage.height * SCALE
+      );
+    }
+
+    function drawBeats() {
+      beatCoordsArr.forEach((beat) => {
+        ctx.strokeRect(beat.x, beat.y, 20, 20);
+      });
+    }
+
+    function update() {
+      beatCoordsArr.forEach((beat) => {
+        beat.y += 1;
+      });
+    }
+
+    function gameLoop() {
+      update();
+      // ctx.save();
+      draw();
+      requestAnimationFrame(gameLoop);
+      // ctx.restore();
+    }
+
+    gameLoop();
+  }, []);
 
   return (
     <canvas
@@ -43,7 +87,9 @@ const Main = () => {
       ref={canvasRef}
       width={canvasWidth}
       height={canvasHeight}
-      onClick={handleCanvasClick}
+      // onClick={handleCanvasClick}
+      tabIndex={0}
+      // onKeyPress={handleKeyPress}
     />
   );
 };
