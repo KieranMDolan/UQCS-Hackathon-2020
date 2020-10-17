@@ -23,8 +23,12 @@ const screenWH = { width: canvasWidth, height: canvasHeight };
 const START_RANGE = canvasHeight / 2 - SCALE * HEART_OFFSET_Y;
 const END_RANGE = canvasHeight / 2 + SCALE * HEART_OFFSET_Y;
 
+// scoring variables
+let comboCount = 0;
+
 // helper random function
-function randomIntFromInterval(min, max) { // min and max included 
+function randomIntFromInterval(min, max) {
+  // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 // function to fill beat coordinates with dummy data
@@ -33,7 +37,7 @@ const getBeatsArr = () => {
   let yPoint = 0;
   let coordArr = [];
   for (let i = 0; i < 20; i++) {
-    coordArr.push({ x: X_POINT, y: yPoint, hittable: true, shouldDraw: true});
+    coordArr.push({ x: X_POINT, y: yPoint, hittable: true, shouldDraw: true });
     yPoint -= randomIntFromInterval(40, 130);
   }
   coordArr.reverse();
@@ -59,6 +63,8 @@ const Main = () => {
       drawHeart();
       // loop through coords and draw beats
       drawBeats();
+      // draw combo count
+      drawComboCount();
     }
 
     function drawHeart() {
@@ -79,14 +85,24 @@ const Main = () => {
       });
     }
 
+    function drawComboCount() {
+      ctx.font = '64px Verdana';
+      ctx.fillText(
+        'x' + comboCount,
+        canvasWidth / 2 + SCALE * HEART_OFFSET_X - 40,
+        canvasHeight / 2 - SCALE * HEART_OFFSET_Y + 30
+      );
+    }
+
     function update() {
       beatCoordsArr.forEach((beat) => {
         beat.y += 1;
         if (beat.y > END_RANGE && beat.hittable) {
+          comboCount = 0;
           beat.hittable = false;
           TRACKED_INDEX--;
         }
-        if ( beat.y > canvasHeight ) {
+        if (beat.y > canvasHeight) {
           beat.shouldDraw = false;
         }
       });
@@ -107,10 +123,13 @@ const Main = () => {
     if (event.key === ' ' && beatCoordsArr.length !== 0) {
       let y = beatCoordsArr[TRACKED_INDEX].y;
       // change to tracked index
-      if ( y >= START_RANGE && y <= END_RANGE){
+      if (y >= START_RANGE && y <= END_RANGE) {
+        comboCount++;
         beatCoordsArr[TRACKED_INDEX].shouldDraw = false;
         beatCoordsArr[TRACKED_INDEX].hittable = false;
         TRACKED_INDEX--;
+      } else {
+        comboCount = 0;
       }
     }
   };
