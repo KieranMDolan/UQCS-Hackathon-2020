@@ -1,41 +1,53 @@
-import React, { useState } from 'react';
-import logo from './logo.svg';
+import { Avatar, List, ListItem, ListItemAvatar } from '@material-ui/core';
+import ListItemText from '@material-ui/core/ListItemText';
+import FolderIcon from '@material-ui/icons/Folder';
+import React from 'react';
 import './App.css';
-import NavigationBar from './components/NavBar';
-import PersistentDrawerRight from './components/SideBar'
-import { makeStyles } from '@material-ui/core/styles';
 import body from './images/body.png';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  heart: {
-    marginRight: "35vw"
-  },
-  body: {
-    marginLeft: "auto",
-    height: "45vw"
-  }
-})); 
+function generate(element) {
+  return [0, 1, 2].map((value) =>
+    React.cloneElement(element, {
+      key: value,
+    }),
+  );
+}
 
 function App() {
-  const classes = useStyles();
-  
+  const numbers = [1, 2, 3, 4, 5];
   return (
 
     <div className="App">
-      <NavigationBar></NavigationBar>
-      <div className="main">
-        <div className=""></div>
+      <img className="body" src={body} />
 
-        <header className="App-header">
-          <button className={classes.heart}>Count up bby</button>
-          <img className={classes.body} src={body}/>
-        </header>
-
+      <div className="skill-container">
+        <h3>Skills</h3>
+        <button className="skill-button">Count up bby</button>
+        <button className="skill-button">Count up bby</button>
+        <button className="skill-button">Count up bby</button>
+        <button className="skill-button">Count up bby</button>
       </div>
 
+      <div className="game-container">
+        <h1>JOULES</h1>
+        <button className="heart">Count up bby</button>
+        <h2 className="bpm">BPM</h2>
+      </div>
+
+      <List className="list-container" dense="true">
+        {generate(
+          <ListItem className="list-item">
+            <ListItemAvatar>
+              <Avatar>
+                <FolderIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              primary="Single-line item"
+            />
+          </ListItem>,
+        )}
+      </List>
 
     </div>
   );

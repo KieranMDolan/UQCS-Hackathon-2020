@@ -1,16 +1,56 @@
 .App {
   text-align: center;
+  height:100vh;
+  width:100vw;
+  overflow:none;
+  display:flex;
+  flex-direction: row;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+.heart {
+  width:20vw;
+  height:40vw;
 }
 
-.main {
+.body {
+  text-align: left;
+}
+
+.bpm {
+  border-radius: 1%;
+  border-color: black;
+  border-style: solid;
+}
+
+.skill-container {
   display:flex;
   flex-direction: column;
-  
+  left:5vw;
+  bottom:7vh;
+  position: absolute;
+}
+
+.skill-button {
+  padding: 10px 40px;
+}
+
+.game-container {
+  display:flex;
+  flex-direction:column;
+  left:30vw;
+  position:absolute;
+}
+
+.list-container {
+  display:flex;
+  flex-direction:column;
+  left:50%;
+  position:absolute;
+}
+
+.list-item {
+  font-size: 20cm;
 }
 
 @media (prefers-reduced-motion: no-preference) {
