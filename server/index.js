@@ -8,18 +8,7 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const path = require('path');
 const PORT = process.env.PORT || 3001;
-
-const MongoClient = require('mongodb').MongoClient;
-const CONNECTION_STRING = "mongodb+srv://admin:cnWjLEdL4MdZXJ9@cluster0.5i2pc.mongodb.net/<dbname>?retryWrites=true&w=majority"
-let db;
-MongoClient.connect(CONNECTION_STRING, {
-    useUnifiedTopology: true
-}, async (err, client) => {
-    if (err) return console.error(err)
-    db = await client.db("heart-attack");
-    console.log('Connected to Database')
-});
-
+const db = require('./db')();
 
 app.use(cors());
 app.use(morgan('tiny'));
