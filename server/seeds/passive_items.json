@@ -1,9 +1,136 @@
 [
     {
-        "name": "cookie",
-        "jps": 1,
+        "name": "Cookie",
+        "jps": 0.1,
         "flavour": "Eating it resonates a sense of familiarity within you",
         "initial_cost": 10,
+        "upgrades": [
+            {
+                "name": "grandma",
+                "cost": 1200,
+                "multiplier": 2
+            }
+        ]
+    },
+    {
+        "name": "Tea",
+        "jps": 1,
+        "flavour": "Calming but energising",
+        "initial_cost": 100,
+        "upgrades": [
+            {
+                "name": "Bubble tea",
+                "cost": 1200,
+                "multiplier": 2
+            },
+            {
+                "name": "Sugar without the tea",
+                "cost": 10000,
+                "multiplier": 4
+            }
+        ]
+    },
+    {
+        "name": "Soft drink",
+        "jps": 8,
+        "flavour": "The fizz sends jolts through your body",
+        "initial_cost": 1100,
+        "upgrades": [
+            {
+                "name": "Hard drink",
+                "cost": 10000,
+                "multiplier": 2
+            },
+            {
+                "name": "??? drink",
+                "cost": 50000,
+                "multiplier": 4
+            }
+        ]
+    },
+    {
+        "name": "Single layered slice of mudcake",
+        "jps": 47,
+        "flavour": "You wonder how many more layers a mudcake can have",
+        "initial_cost": 12000,
+        "upgrades": [
+            {
+                "name": "Double layered slices of mudcake",
+                "cost": 30000,
+                "multiplier": 2
+            },
+            {
+                "name": "Mudcake",
+                "cost": 75000,
+                "multiplier": 4
+            }
+        ]
+    },
+    {
+        "name": "Red bull",
+        "jps": 260,
+        "flavour": "Sponsored?",
+        "initial_cost": 130000,
+        "upgrades": [
+            {
+                "name": "Red bull carton",
+                "cost": 300000,
+                "multiplier": 2
+            },
+            {
+                "name": "Quantum redbull",
+                "cost": 600000,
+                "multiplier": 4
+            }
+        ]
+    },
+    {
+        "name": "12 HR energy",
+        "jps": 1400,
+        "flavour": "12 hours may not be enough",
+        "initial_cost": 1400000,
+        "upgrades": [
+            {
+                "name": "24 hour energy",
+                "cost": 3000000,
+                "multiplier": 2
+            },
+            {
+                "name": "NaN hour energy",
+                "cost": 40000000,
+                "multiplier": 4
+            }
+        ]
+    },
+    {
+        "name": "Deep fried butter",
+        "jps": 7800,
+        "flavour": "Doesn't taste as bad as you thought it would",
+        "initial_cost": 20000000,
+        "upgrades": [
+            {
+                "name": "Deep fried lard",
+                "cost": 100000000,
+                "multiplier": 3
+            }
+        ]
+    },
+    {
+        "name": "Caffeine injection",
+        "jps": 44000,
+        "flavour": "Don't do this at home",
+        "initial_cost": 330000000,
+        "upgrades": [
+            {
+                "name": "Adrenaline injection",
+                "cost": 700000000,
+                "multiplier": 2.5
+            },
+            {
+                "name": "Rocket fuel injection",
+                "cost": 100000000,
+                "multiplier": 5
+            }
+        ]
     }
-
 ]
