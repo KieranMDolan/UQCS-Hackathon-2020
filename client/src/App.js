@@ -1,26 +1,42 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import NavigationBar from './components/NavBar';
+import PersistentDrawerRight from './components/SideBar'
+import { makeStyles } from '@material-ui/core/styles';
+import body from './images/body.png';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  heart: {
+    marginRight: "35vw"
+  },
+  body: {
+    marginLeft: "auto",
+    height: "45vw"
+  }
+})); 
 
 function App() {
-  const [state, setstate] = useState(initialState)
+  const classes = useStyles();
+  
   return (
+
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <button>Count up bby</button>
-      </header>
+      <NavigationBar></NavigationBar>
+      <div className="main">
+        <div className=""></div>
+
+        <header className="App-header">
+          <button className={classes.heart}>Count up bby</button>
+          <img className={classes.body} src={body}/>
+        </header>
+
+      </div>
+
+
     </div>
   );
 }
