@@ -14,7 +14,11 @@ function generate(element) {
 }
 
 function App() {
-  const numbers = [1, 2, 3, 4, 5];
+import React, {useState} from 'react';
+import './App.css';
+import Main from './components/main/Main';
+
+function App() {
   return (
 
     <div className="App">
@@ -48,7 +52,7 @@ function App() {
           </ListItem>,
         )}
       </List>
-
+      <Main />
     </div>
   );
 }
