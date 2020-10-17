@@ -6,6 +6,7 @@ const io = require("socket.io")(server);
 const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
+const path = require('path');
 const PORT = process.env.PORT || 3001;
 
 const MongoClient = require('mongodb').MongoClient;
@@ -25,18 +26,26 @@ app.use(morgan('tiny'));
 app.use(express.json());
 app.use(helmet());
 
-app.use(express.static(__dirname + 'public')); //Serves resources from public folder
+app.use(express.static(__dirname + '/public')); //Serves resources from public folder
 
-app.get('/', async (req, res) => {
-    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+app.get('/', (req, res) => {
+    //res.sendFile(path.join(__dirname+'/../client/build/index.html'));
+    res.json({message:"this the api"});
 })
 
-app.get('/', async(req, res))
+app.get('/api', async(req, res)=> {
+    res.json({message: "PINGING ✔"});
+});
+
+app.get('/resources/passive_items', async (req, res)=> {
+    return res.json(await db.collection("passive_items").find({}));
+});
+
 io.on('connection', (socket) => {
     console.log('a user connected');
     socket.on('login', (name) => {
         const user = db.collection("users").findAndModify({
-            query: {name}
+            query: {name},
             update: {
                 $setOnInsert: {
                     // name, 
@@ -45,7 +54,7 @@ io.on('connection', (socket) => {
                     max_combo: 0, 
                     prestege_items: [], 
                 }
-            }
+            },
             new: true,   // return new doc if one is upserted
             upsert: true // insert the document if it does not exist
         });

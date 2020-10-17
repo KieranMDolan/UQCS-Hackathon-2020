@@ -1,15 +1,18 @@
-import React from 'react';
+import { SERVER } from 'appconstants';
+import React, { useRef } from 'react';
 import './App.css';
-import body from './assets/body.png';
 import Main from './components/main/Main';
 import UpgradeList from './components/UpgradeList';
+import socketIOClient from "socket.io-client";
 
+const bodySrc = `${SERVER}images/body.png`
 
 function App() {
+  const socketRef = useRef(null);
   return (
 
     <div className="App">
-      <img className="body" src={body} />
+      <img className="body" src={bodySrc} />
 
       <div className="playing-container">
         <h2 className="now-playing">Now playing...</h2>
@@ -27,10 +30,7 @@ function App() {
         <Main />
         <h2 className="bpm">BPM</h2>
       </div>
-
-      <UpgradeList></UpgradeList>
-
-
+      <UpgradeList />
     </div>
   );
 }

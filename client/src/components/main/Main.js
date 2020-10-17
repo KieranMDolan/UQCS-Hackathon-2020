@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import heartImageSrc from '../../assets/heart.png';
 import { useKeyPress } from '../../hooks/useKeyPress';
+import { SERVER } from 'appconstants';
 
 // load image for heart
 let heartImage = new Image();
-heartImage.src = heartImageSrc;
+heartImage.src = `${SERVER}images/heart.png`;
 
 // Heart constants
 const SCALE = 0.2;
@@ -16,8 +16,8 @@ const BEAT_RADIUS = 20;
 let INCREMENT_SIZE = 4;
 
 // Canvas constants
-const canvasWidth = window.innerWidth/2;
-const canvasHeight = window.innerHeight/1.1;
+const canvasWidth = window.innerWidth / 2;
+const canvasHeight = window.innerHeight / 1.1;
 const screenWH = { width: canvasWidth, height: canvasHeight };
 
 // scoring range constants
