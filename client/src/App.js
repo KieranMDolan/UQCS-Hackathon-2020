@@ -1,8 +1,9 @@
 import { Avatar, List, ListItem, ListItemAvatar } from '@material-ui/core';
 import ListItemText from '@material-ui/core/ListItemText';
 import FolderIcon from '@material-ui/icons/Folder';
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
+import Main from './components/main/Main';
 import body from './images/body.png';
 
 function generate(element) {
@@ -12,11 +13,6 @@ function generate(element) {
     }),
   );
 }
-
-function App() {
-import React, {useState} from 'react';
-import './App.css';
-import Main from './components/main/Main';
 
 function App() {
   return (
@@ -34,7 +30,6 @@ function App() {
 
       <div className="game-container">
         <h1>JOULES</h1>
-        <button className="heart">Count up bby</button>
         <h2 className="bpm">BPM</h2>
       </div>
 

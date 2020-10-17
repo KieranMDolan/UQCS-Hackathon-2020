@@ -7,6 +7,12 @@
   flex-direction: row;
 }
 
+.App-canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
 
 .heart {
   width:20vw;
