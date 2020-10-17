@@ -8,7 +8,17 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const path = require('path');
 const PORT = process.env.PORT || 3001;
-const db = require('./db')();
+
+const MongoClient = require('mongodb').MongoClient;
+const CONNECTION_STRING = process.env.MONGO_URL;
+let db;
+MongoClient.connect(CONNECTION_STRING, {
+    useUnifiedTopology: true
+}, async (err, client) => {
+    if (err) return console.error(err)
+    db = await client.db(process.env.DB_NAME);
+    console.log('Connected to Database')
+});
 
 app.use(cors());
 app.use(morgan('tiny'));
@@ -27,7 +37,9 @@ app.get('/api', async(req, res)=> {
 });
 
 app.get('/resources/passive_items', async (req, res)=> {
-    return res.json(await db.collection("passive_items").find({}));
+    const result = await db.collection("passive_items").find({}).toArray();
+    console.log(result);
+    return res.json(result);
 });
 
 io.on('connection', (socket) => {
