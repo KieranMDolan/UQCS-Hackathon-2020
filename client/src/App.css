@@ -22,9 +22,19 @@
   border-style: solid;
 }
 
+.now-playing {
+  padding-bottom: 100%;
+}
+
 .skill-container {
   display:flex;
   flex-direction: column;
+}
+
+.playing-container {
+  display:flex;
+  flex-direction: column;
+
   left:5vw;
   bottom:7vh;
   position: absolute;
@@ -37,14 +47,14 @@
 .game-container {
   display:flex;
   flex-direction:column;
-  left:30vw;
+  right:30vw;
   position:absolute;
 }
 
 .list-container {
   display:flex;
   flex-direction:column;
-  left:50%;
+  left: 60%;
   position:absolute;
 }
 
