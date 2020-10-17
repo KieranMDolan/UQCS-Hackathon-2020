@@ -13,9 +13,15 @@ const HEART_OFFSET_X = heartImage.width / 2;
 
 // Beat constants
 const BEAT_RADIUS = 20;
+
+// Canvas constants
 const canvasWidth = window.innerWidth;
 const canvasHeight = window.innerHeight;
 const screenWH = { width: canvasWidth, height: canvasHeight };
+
+// scoring range constants
+const START_RANGE = canvasHeight / 2 - SCALE * HEART_OFFSET_Y;
+const END_RANGE = canvasHeight / 2 + SCALE * HEART_OFFSET_Y;
 
 // function to fill beat coordinates with dummy data
 const getBeatsArr = () => {
@@ -23,7 +29,7 @@ const getBeatsArr = () => {
   let yPoint = 0;
   let coordArr = [];
   for (let i = 0; i < 20; i++) {
-    coordArr.push({ x: X_POINT, y: yPoint });
+    coordArr.push({ x: X_POINT, y: yPoint, hittable: true, shouldDraw: true});
     yPoint -= 100;
   }
   coordArr.reverse();
@@ -31,6 +37,7 @@ const getBeatsArr = () => {
 };
 
 let beatCoordsArr = getBeatsArr();
+let TRACKED_INDEX = beatCoordsArr.length - 1;
 
 const Main = () => {
   let spacePressed = useKeyPress(' ');
@@ -62,13 +69,19 @@ const Main = () => {
 
     function drawBeats() {
       beatCoordsArr.forEach((beat) => {
-        ctx.strokeRect(beat.x, beat.y, 20, 20);
+        if (beat.shouldDraw) {
+          ctx.strokeRect(beat.x, beat.y, 20, 20);
+        }
       });
     }
 
     function update() {
       beatCoordsArr.forEach((beat) => {
         beat.y += 1;
+        if (beat.y > END_RANGE && beat.hittable) {
+          beat.hittable = false;
+          TRACKED_INDEX--;
+        }
       });
     }
 
@@ -84,11 +97,16 @@ const Main = () => {
   }, []);
 
   const handleKeyPress = (event) => {
-    if(event.key === ' '){
-      console.log('space pressed')
-      beatCoordsArr = beatCoordsArr.slice(0, beatCoordsArr.length - 1);
+    if (event.key === ' ' && beatCoordsArr.length !== 0) {
+      let y = beatCoordsArr[TRACKED_INDEX].y;
+      // change to tracked index
+      if ( y >= START_RANGE && y <= END_RANGE){
+        beatCoordsArr[TRACKED_INDEX].shouldDraw = false;
+        beatCoordsArr[TRACKED_INDEX].hittable = false;
+        TRACKED_INDEX--;
+      }
     }
-  }
+  };
 
   return (
     <canvas
