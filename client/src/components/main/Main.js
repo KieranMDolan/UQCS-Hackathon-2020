@@ -23,15 +23,6 @@ const screenWH = { width: canvasWidth, height: canvasHeight };
 const START_RANGE = canvasHeight / 2 - SCALE * HEART_OFFSET_Y;
 const END_RANGE = canvasHeight / 2 + SCALE * HEART_OFFSET_Y;
 
-// // scoring variables
-// let score = {
-//   comboCount: 0,
-//   comboMax: 30,
-//   scoreFactor: 1,
-//   baseScore: 1,
-//   score: 0
-// }
-
 // helper random function
 function randomIntFromInterval(min, max) {
   // min and max included
@@ -58,8 +49,8 @@ const Main = (props) => {
 
   // game loop functionality
   useEffect(() => {
-    document.addEventListener("keydown", handleKeyPress);
-    console.log("Startup func");
+    // document.addEventListener("keydown", handleKeyPress);
+    // console.log("Startup func");
     const canvasObj = canvasRef.current;
     let ctx = canvasObj.getContext('2d');
 
@@ -91,15 +82,6 @@ const Main = (props) => {
           ctx.strokeRect(beat.x, beat.y, 20, 20);
         }
       });
-    }
-
-    function drawComboCount() {
-      ctx.font = '48px Verdana';
-      ctx.fillText(
-        'x' + props.score.comboCount,
-        canvasWidth / 2 + SCALE * HEART_OFFSET_X - 30,
-        canvasHeight / 2 - SCALE * HEART_OFFSET_Y + 30
-      );
     }
 
     function update() {
@@ -167,7 +149,7 @@ const Main = (props) => {
       height={canvasHeight}
       // onClick={handleCanvasClick}
       tabIndex={0}
-      // onKeyPress={handleKeyPress}
+      onKeyPress={handleKeyPress}
     />
   );
 };
