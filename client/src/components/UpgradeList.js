@@ -35,6 +35,9 @@ export default function UpgradeList(props) {
             </Tooltip>
           )
         })}
+                  <button className="buttons">
+            Sync
+          </button>
     </List>
   )
 }
