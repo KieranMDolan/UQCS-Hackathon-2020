@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useKeyPress } from '../../hooks/useKeyPress';
-import { SERVER } from 'appconstants';
+import { SERVER } from '../../appconstants';
 
 // load image for heart
 let heartImage = new Image();
