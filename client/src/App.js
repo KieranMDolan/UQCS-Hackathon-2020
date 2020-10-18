@@ -1,5 +1,5 @@
 import { SERVER } from 'appconstants';
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import './App.css';
 import Main from './components/main/Main';
 import UpgradeList from './components/UpgradeList';
@@ -9,6 +9,11 @@ const bodySrc = `${SERVER}images/body.png`
 
 function App() {
   const socketRef = useRef(null);
+  useEffect(()=> {
+    socketRef.current = socketIOClient(SERVER);
+    const sock = socketRef.current;
+  }, []);
+
   return (
 
     <div className="App">
