@@ -3,7 +3,9 @@ import { SERVER } from '../../appconstants';
 
 // load image for heart
 let heartImage = new Image();
+let beatImage = new Image();
 heartImage.src = `${SERVER}images/heart.png`;
+beatImage.src = `${SERVER}images/Beat.png`;
 
 // Heart constants
 const SCALE = 0.3;
@@ -79,7 +81,7 @@ const Main = (props) => {
     function drawBeats() {
       beatCoordsArr.forEach((beat) => {
         if (beat.shouldDraw) {
-          ctx.strokeRect(beat.x, beat.y, 20, 20);
+          ctx.drawImage(beatImage, beat.x, beat.y, 20, 20);
         }
       });
     }
