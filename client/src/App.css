@@ -7,11 +7,11 @@
   flex-direction: row;
 }
 
-.App-canvas {
+/* .App-canvas {
   position: absolute;
   left: 0;
   top: 0;
-}
+} */
 
 .heart {
   width:20vw;
@@ -68,12 +68,9 @@
 .list-container {
   display:flex;
   flex-direction:column;
-  left: 60%;
-  position:absolute;
-}
+  margin-left:auto; 
+  margin-right:0;
 
-.list-item {
-  font-size: 20cm;
 }
 
 @media (prefers-reduced-motion: no-preference) {
