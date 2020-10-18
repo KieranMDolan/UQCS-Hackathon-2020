@@ -13,7 +13,6 @@
   top: 0;
 }
 
-
 .heart {
   width:20vw;
   height:40vw;
@@ -21,6 +20,7 @@
 
 .body {
   text-align: left;
+  user-select: none;
 }
 
 .bpm {
@@ -29,12 +29,29 @@
   border-style: solid;
 }
 
+.now-playing {
+  padding-bottom: 100%;
+}
+
 .skill-container {
   display:flex;
   flex-direction: column;
+}
+
+.playing-container {
+  display:flex;
+  flex-direction: column;
+
   left:5vw;
   bottom:7vh;
   position: absolute;
+}
+
+.upgrades-container {
+  display:flex;
+  flex-direction:column;
+  right:10vw;
+  position:absolute;
 }
 
 .skill-button {
@@ -44,14 +61,14 @@
 .game-container {
   display:flex;
   flex-direction:column;
-  left:30vw;
+  right:30vw;
   position:absolute;
 }
 
 .list-container {
   display:flex;
   flex-direction:column;
-  left:50%;
+  left: 60%;
   position:absolute;
 }
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import heartImageSrc from '../../assets/heart.png';
+import { SERVER } from '../../appconstants';
 
 // load image for heart
 let heartImage = new Image();
-heartImage.src = heartImageSrc;
+heartImage.src = `${SERVER}images/heart.png`;
 
 // Heart constants
 const SCALE = 0.3;
@@ -15,8 +15,8 @@ const BEAT_RADIUS = 20;
 let INCREMENT_SIZE = 4;
 
 // Canvas constants
-const canvasWidth = window.innerWidth;
-const canvasHeight = window.innerHeight;
+const canvasWidth = window.innerWidth / 2;
+const canvasHeight = window.innerHeight / 1.1;
 const screenWH = { width: canvasWidth, height: canvasHeight };
 
 // scoring range constants
@@ -58,6 +58,8 @@ const Main = (props) => {
 
   // game loop functionality
   useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
+    console.log("Startup func");
     const canvasObj = canvasRef.current;
     let ctx = canvasObj.getContext('2d');
 
@@ -165,7 +167,7 @@ const Main = (props) => {
       height={canvasHeight}
       // onClick={handleCanvasClick}
       tabIndex={0}
-      onKeyPress={handleKeyPress}
+      // onKeyPress={handleKeyPress}
     />
   );
 };

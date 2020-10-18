@@ -1,0 +1,59 @@
+[
+    {
+        "name": "Easier to hit perfect notes",
+        "flavour": "Easy mode",
+        "coefficient": 1.25,
+        "initial_cost": 1000,
+        "upgrades": [
+            {
+                "name": "Level 2",
+                "cost": 10000,
+                "multiplier": 2
+            }
+        ]
+    },
+    {
+        "name": "Faster notes but higher joules every beat",
+        "flavour": "Risk vs. reward",
+        "coefficient": 2,
+        "initial_cost": 3000,
+        "upgrades": [
+            {
+                "name": "Level 2",
+                "cost": 10000,
+                "multiplier": 2
+            }
+        ]
+    },
+    {
+        "name": "Increase combo multiplier",
+        "flavour": "C-c-c-combo breaker",
+        "coefficient": 1.5,
+        "initial_cost": 40000,
+        "upgrades": [
+            {
+                "name": "Level 2",
+                "cost": 100000,
+                "multiplier": 2
+            },
+            {
+                "name": "Level 3",
+                "cost": 250000,
+                "multiplier": 3
+            }
+        ]
+    },
+    {
+        "name": "Increase joules per beat",
+        "flavour": "Juju on that beat",
+        "coefficient": 2,
+        "initial_cost": 60000,
+        "upgrades": [
+            {
+                "name": "Level 2",
+                "cost": 1,
+                "multiplier": 2
+            }
+        ]
+    }
+]
