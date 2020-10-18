@@ -41,6 +41,7 @@ function App() {
     sock.on('initial', (user) => {
       console.log(user);
       setUser(user);
+      setJoules(user.joules);
     });
     sock.emit('login', "anhad");
   }, []);
@@ -108,7 +109,7 @@ function App() {
 
         <div className="list-container">
           <h2>Upgrades</h2>
-          <UpgradeList socket={socketRef} passiveItems={passiveItems} />
+          <UpgradeList socket={socketRef} passiveItems={passiveItems} joules={joules}/>
 
         </div>
 

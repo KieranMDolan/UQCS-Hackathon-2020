@@ -14,6 +14,11 @@ export default function UpgradeList(props) {
     props.socket.current.emit("buy", { _id: user._id, item });
     setUser({ ...user, passive_items: [...user.passive_items, item] });
   }
+  function handleSync() {
+    const newUser = {...user};
+    newUser.joules = props.joules;
+    props.socket.current.emit("update", newUser);  
+  }
 
   return (
     <List className="list-container">
@@ -35,8 +40,8 @@ export default function UpgradeList(props) {
             </Tooltip>
           )
         })}
-                  <button className="buttons">
-            Sync
+      <button onClick={handleSync} className="buttons">
+        Sync
           </button>
     </List>
   )
