@@ -1,5 +1,5 @@
 
-import { SERVER } from 'appconstants';
+import { SERVER } from './appconstants';
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import './App.css';
 import Main from './components/main/Main';
@@ -11,7 +11,10 @@ import ReactAudioPlayer from 'react-audio-player';
 // const prestigeURL = `${SERVER}/resources/prestige_items`;
 import UserContext from './components/UserContext';
 const bodySrc = `${SERVER}images/body.png`
-const songSrc = `${SERVER}/music.ogg`
+const songSrc = `${SERVER}/music.ogg`;
+const passiveURL = `${SERVER}resources/passive_items`;
+
+
 
 
 
@@ -28,10 +31,15 @@ function App() {
     // joules: 0,
   });
 
-
+  const [passiveItems, setPassiveItems] = useState([]);
 
   const [joules, setJoules] = useState(0);
   useEffect(() => {
+    (async () => {
+      const result = await fetch(passiveURL);
+      const json = await result.json();
+      setPassiveItems(json);
+    })();
     socketRef.current = socketIOClient(SERVER);
     const sock = socketRef.current;
     sock.on('initial', (user) => {
@@ -41,7 +49,13 @@ function App() {
     sock.emit('login', "anhad");
   }, []);
 
-  const providerValue = useMemo(() => { return { user, setUser } }, [user, setUser]); //Only recomputes as object when logintoken or setLogintoken change
+  const providerValue = useMemo(() => {
+    return {
+      user,
+      setUser,
+      upgradeList: null
+  }
+  }, [user, setUser]); //Only recomputes as object when logintoken or setLogintoken change
 
   return (
     <UserContext.Provider value={providerValue}>
@@ -67,12 +81,13 @@ function App() {
         </div>
 
         <div className="game-container">
-        <Main
-          score={score}
-          setScore={setScore}
-          joules={joules}
-          setJoules={setJoules}
-        />
+          <Main
+            score={score}
+            setScore={setScore}
+            joules={joules}
+            setJoules={setJoules}
+          />
+          <h1>{joules}JOULES</h1>
           <h2 className="bpm">BPM</h2>
         </div>
 

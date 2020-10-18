@@ -1,11 +1,9 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState, useContext } from 'react';
 import { Tooltip, Avatar, List, ListItem, ListItemAvatar, ServerStyleSheets } from '@material-ui/core';
 import ListItemText from '@material-ui/core/ListItemText';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
-import React, { useContext, useEffect, useState } from 'react';
 import { SERVER } from '../appconstants';
 import UserContext from './UserContext';
-const passiveURL = `${SERVER}resources/passive_items`;
 
 export default function UpgradeList(props) {
 
@@ -14,22 +12,15 @@ export default function UpgradeList(props) {
   function upgradeItem(item) {
     console.log({ item });
     props.socket.current.emit("buy", { _id: user._id, item });
-    setUser({ ...user, passive_items: [...passiveItems, item] });
+    setUser({ ...user, passive_items: [...user.passiveItems, item] });
   }
-  const [passiveItems, setPassiveItems] = useState([]);
-  useEffect(() => {
-    (async () => {
-      const result = await fetch(passiveURL);
-      const json = await result.json();
-      setPassiveItems(json);
-    })();
-  }, []);
+
 
   //useMemo
   return (
     <List className="list-container">
       {
-        passiveItems.map((item) => {
+        props.passiveItems.map((item) => {
           return (
             <Tooltip title={item.flavour} >
               <ListItem button component="a" className="list-item" onClick={(event) => { upgradeItem(item._id) }}>
