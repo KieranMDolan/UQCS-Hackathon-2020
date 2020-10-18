@@ -3,10 +3,10 @@ import React, { useRef, useState } from 'react';
 import './App.css';
 import Main from './components/main/Main';
 import UpgradeList from './components/UpgradeList';
-import socketIOClient from "socket.io-client";
+import socketIOClient from 'socket.io-client';
 // const skillURL = `${SERVER}/resources/skill_items`;
 // const prestigeURL = `${SERVER}/resources/prestige_items`;
-const bodySrc = `${SERVER}images/body.png`
+const bodySrc = `${SERVER}images/body.png`;
 
 function App() {
   const [score, setScore] = useState({
@@ -18,7 +18,7 @@ function App() {
   });
 
   const [joules, setJoules] = useState(0);
-  
+
   const socketRef = useRef(null);
   // const [state, setState] = useState(null);
   // useEffect(()=> {
@@ -27,7 +27,6 @@ function App() {
   //         const json = await result.json();
   //         setState(json);
   //     })();
-
 
   // }, []);
   return (
@@ -43,12 +42,16 @@ function App() {
           <button className="skill-button">Count up bby</button>
           <button className="skill-button">Count up bby</button>
         </div>
-
       </div>
 
       <div className="game-container">
-        <Main score={score} setScore={setScore} joules={joules} setJoules={setJoules} />
-          <h1>{joules}JOULES</h1>
+        <Main
+          score={score}
+          setScore={setScore}
+          joules={joules}
+          setJoules={setJoules}
+        />
+        <h1>{joules}JOULES</h1>
         <h2 className="bpm">{score.comboCount}BPM</h2>
       </div>
 
