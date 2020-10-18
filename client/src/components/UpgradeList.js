@@ -30,7 +30,7 @@ export default function UpgradeList(props) {
                 <ListItemText
                   primary={item.name}
                 />
-                {item.count}
+                [{item.count}]
               </ListItem>
             </Tooltip>
           )
