@@ -44,27 +44,28 @@ app.get('/resources/passive_items', async (req, res)=> {
 
 io.on('connection', (socket) => {
     console.log('a user connected');
-    socket.on('login', (name) => {
-        const user = db.collection("users").findAndModify({
-            query: {name},
-            update: {
-                $setOnInsert: {
-                    // name, 
-                    joules: 1, 
-                    passive_items: [], 
-                    max_combo: 0, 
-                    prestege_items: [], 
-                }
-            },
-            new: true,   // return new doc if one is upserted
-            upsert: true // insert the document if it does not exist
+    socket.on('login', async (name) => {
+        console.log("Emit from ", name);
+        const user = await db.collection("users").findOne({name});
+        if (!user) {
+            console.log("No user found");
+            const newUser = await db.collection("users").insertOne({
+                name,
+                joules: 1, 
+                passive_items: [], 
+                max_combo: 0, 
+                skill_items: [],
+                prestige: 0 
+            });
+            console.log(newUser);
+        }
+        socket.on('buy', async (payload)=> {
+            const user = await db.collection("users").updateOne({_id:payload._id}, {$push: {item: payload.item}});
         });
-        console.log(user);
-        socket.on('update', (payload)=> {
+        socket.on('update', async (payload)=> {
             db.collection("users").find({id:payload._id});
         });
     });
-    
 });
 
 server.listen(PORT, () => {

@@ -1,10 +1,6 @@
-<<<<<<< HEAD
+
 import { SERVER } from 'appconstants';
 import React, { useRef, useEffect } from 'react';
-=======
-import { SERVER } from './appconstants';
-import React, { useRef } from 'react';
->>>>>>> 45adb87970c3cc9cb42e73394be64fea8b7df6ae
 import './App.css';
 import Main from './components/main/Main';
 import UpgradeList from './components/UpgradeList';
@@ -18,6 +14,7 @@ function App() {
   useEffect(()=> {
     socketRef.current = socketIOClient(SERVER);
     const sock = socketRef.current;
+    sock.emit('login', "anhad");
   }, []);
 
   return (
@@ -44,7 +41,7 @@ function App() {
 
       <div className="list-container">
         <h2>Upgrades</h2>
-        <UpgradeList />
+        <UpgradeList socket={socketRef}/>
 
       </div>
 
