@@ -57,6 +57,8 @@ const Main = () => {
 
   // game loop functionality
   useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
+    console.log("Startup func");
     const canvasObj = canvasRef.current;
     let ctx = canvasObj.getContext('2d');
 
@@ -169,7 +171,7 @@ const Main = () => {
       height={canvasHeight}
       // onClick={handleCanvasClick}
       tabIndex={0}
-      onKeyPress={handleKeyPress}
+      // onKeyPress={handleKeyPress}
     />
   );
 };
