@@ -117,9 +117,7 @@ function App() {
         <div className="list-container">
           <h2>Upgrades</h2>
           <UpgradeList socket={socketRef} passiveItems={passiveItems} />
-          <button>
-            Sync
-          </button>
+
         </div>
 
       </div>
