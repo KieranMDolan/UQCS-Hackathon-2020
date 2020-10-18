@@ -5,10 +5,14 @@ import './App.css';
 import Main from './components/main/Main';
 import UpgradeList from './components/UpgradeList';
 import socketIOClient from "socket.io-client";
+import ReactAudioPlayer from 'react-audio-player';
+
 // const skillURL = `${SERVER}/resources/skill_items`;
 // const prestigeURL = `${SERVER}/resources/prestige_items`;
 import UserContext from './components/UserContext';
 const bodySrc = `${SERVER}images/body.png`
+const songSrc = `${SERVER}/music.ogg`
+
 
 
 
@@ -16,6 +20,17 @@ function App() {
   const socketRef = useRef(null);
   const [user, setUser] = useState(null);
 
+  const [score, setScore] = useState({
+    comboCount: 0,
+    comboMax: 30,
+    scoreFactor: 1,
+    baseScore: 1,
+    // joules: 0,
+  });
+
+
+
+  const [joules, setJoules] = useState(0);
   useEffect(() => {
     socketRef.current = socketIOClient(SERVER);
     const sock = socketRef.current;
@@ -26,14 +41,20 @@ function App() {
     sock.emit('login', "anhad");
   }, []);
 
-  const providerValue = useMemo(()=> {return {user, setUser}}, [user, setUser]); //Only recomputes as object when logintoken or setLogintoken change
+  const providerValue = useMemo(() => { return { user, setUser } }, [user, setUser]); //Only recomputes as object when logintoken or setLogintoken change
 
   return (
     <UserContext.Provider value={providerValue}>
       <div className="App">
+
         <img className="body" src={bodySrc} />
 
+
         <div className="playing-container">
+          <ReactAudioPlayer
+            src={songSrc}
+            autoPlay
+          />
           <h2 className="now-playing">Now playing...</h2>
           <div className="skill-container">
             <h3>Skills</h3>
@@ -46,7 +67,12 @@ function App() {
         </div>
 
         <div className="game-container">
-          <Main />
+        <Main
+          score={score}
+          setScore={setScore}
+          joules={joules}
+          setJoules={setJoules}
+        />
           <h2 className="bpm">BPM</h2>
         </div>
 

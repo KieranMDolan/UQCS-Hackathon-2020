@@ -1,4 +1,5 @@
-import { Avatar, List, ListItem, ListItemAvatar } from '@material-ui/core';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Tooltip, Avatar, List, ListItem, ListItemAvatar, ServerStyleSheets } from '@material-ui/core';
 import ListItemText from '@material-ui/core/ListItemText';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import React, { useContext, useEffect, useState } from 'react';
@@ -12,8 +13,8 @@ export default function UpgradeList(props) {
 
   function upgradeItem(item) {
     console.log({ item });
-    props.socket.current.emit("buy", {_id: user._id, item});
-    setUser({...user, passive_items: [...passiveItems, item]});
+    props.socket.current.emit("buy", { _id: user._id, item });
+    setUser({ ...user, passive_items: [...passiveItems, item] });
   }
   const [passiveItems, setPassiveItems] = useState([]);
   useEffect(() => {
@@ -30,17 +31,18 @@ export default function UpgradeList(props) {
       {
         passiveItems.map((item) => {
           return (
-            <ListItem button component="a" className="list-item" onClick={(event) => { upgradeItem(item._id) }}>
-              <ListItemAvatar>
-                <Avatar>
-                  <FastfoodIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={item.name}
-                secondary={item.flavour}
-              />
-            </ListItem>
+            <Tooltip title={item.flavour} >
+              <ListItem button component="a" className="list-item" onClick={(event) => { upgradeItem(item._id) }}>
+                <ListItemAvatar>
+                  <Avatar>
+                    <FastfoodIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={item.name}
+                />
+              </ListItem>
+            </Tooltip>
           )
         })}
     </List>

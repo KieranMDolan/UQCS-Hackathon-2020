@@ -1,13 +1,14 @@
 import React, { useEffect, useRef } from 'react';
-import { useKeyPress } from '../../hooks/useKeyPress';
 import { SERVER } from '../../appconstants';
 
 // load image for heart
 let heartImage = new Image();
+let beatImage = new Image();
 heartImage.src = `${SERVER}images/heart.png`;
+beatImage.src = `${SERVER}images/Beat.png`;
 
 // Heart constants
-const SCALE = 0.2;
+const SCALE = 0.3;
 const HEART_OFFSET_Y = heartImage.height / 2;
 const HEART_OFFSET_X = heartImage.width / 2;
 
@@ -17,18 +18,12 @@ let INCREMENT_SIZE = 4;
 
 // Canvas constants
 const canvasWidth = window.innerWidth / 2;
-const canvasHeight = window.innerHeight / 1.1;
+const canvasHeight = window.innerHeight / 1.2;
 const screenWH = { width: canvasWidth, height: canvasHeight };
 
 // scoring range constants
 const START_RANGE = canvasHeight / 2 - SCALE * HEART_OFFSET_Y;
 const END_RANGE = canvasHeight / 2 + SCALE * HEART_OFFSET_Y;
-
-// scoring variables
-let comboCount = 0;
-let comboMax = 30;
-let scoreFactor = 1;
-let score = 0;
 
 // helper random function
 function randomIntFromInterval(min, max) {
@@ -51,14 +46,13 @@ const getBeatsArr = () => {
 let beatCoordsArr = getBeatsArr();
 let TRACKED_INDEX = beatCoordsArr.length - 1;
 
-const Main = () => {
-  let spacePressed = useKeyPress(' ');
+const Main = (props) => {
   const canvasRef = useRef(null);
 
   // game loop functionality
   useEffect(() => {
-    document.addEventListener("keydown", handleKeyPress);
-    console.log("Startup func");
+    // document.addEventListener("keydown", handleKeyPress);
+    // console.log("Startup func");
     const canvasObj = canvasRef.current;
     let ctx = canvasObj.getContext('2d');
 
@@ -70,8 +64,8 @@ const Main = () => {
       // loop through coords and draw beats
       drawBeats();
       // draw combo count
-      drawComboCount();
-      drawScore();
+      // drawComboCount();
+      // drawScore();
     }
 
     function drawHeart() {
@@ -87,30 +81,16 @@ const Main = () => {
     function drawBeats() {
       beatCoordsArr.forEach((beat) => {
         if (beat.shouldDraw) {
-          ctx.strokeRect(beat.x, beat.y, 20, 20);
+          ctx.drawImage(beatImage, beat.x, beat.y, 20, 20);
         }
       });
-    }
-
-    function drawComboCount() {
-      ctx.font = '48px Verdana';
-      ctx.fillText(
-        'x' + comboCount,
-        canvasWidth / 2 + SCALE * HEART_OFFSET_X - 30,
-        canvasHeight / 2 - SCALE * HEART_OFFSET_Y + 30
-      );
-    }
-
-    function drawScore() {
-      ctx.font = '64px Verdana';
-      ctx.fillText(score + " JOULES", canvasWidth / 3.5, 100);
     }
 
     function update() {
       beatCoordsArr.forEach((beat) => {
         beat.y += INCREMENT_SIZE;
         if (beat.y > END_RANGE && beat.hittable) {
-          comboCount = 0;
+          props.setScore({ ...props.score, comboCount: 0})
           beat.hittable = false;
           TRACKED_INDEX--;
         }
@@ -133,17 +113,17 @@ const Main = () => {
 
   const increaseScore = () => {
     let toAdd;
-    if (comboCount === 0) {
-      toAdd = 1 * scoreFactor;
+    if (props.score.comboCount === 0) {
+      toAdd = props.score.baseScore * props.score.scoreFactor;
     } else {
-      toAdd = 1 * scoreFactor * comboCount;
+      toAdd = props.score.baseScore * props.score.scoreFactor * props.score.comboCount;
     }
-    score += toAdd;
+    props.setJoules(props.joules + toAdd);
   };
 
   const increaseComboCount = () => {
-    if (comboCount < comboMax) {
-      comboCount++;
+    if (props.score.comboCount < props.score.comboMax) {
+      props.setScore({...props.score, comboCount: props.score.comboCount + 1});
     }
   }
 
@@ -158,7 +138,7 @@ const Main = () => {
         beatCoordsArr[TRACKED_INDEX].hittable = false;
         TRACKED_INDEX--;
       } else {
-        comboCount = 0;
+        props.setScore({ ...props.score, comboCount: 0});
       }
     }
   };
@@ -171,7 +151,7 @@ const Main = () => {
       height={canvasHeight}
       // onClick={handleCanvasClick}
       tabIndex={0}
-      // onKeyPress={handleKeyPress}
+      onKeyPress={handleKeyPress}
     />
   );
 };
