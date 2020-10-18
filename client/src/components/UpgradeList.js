@@ -7,7 +7,7 @@ import UserContext from './UserContext';
 
 export default function UpgradeList(props) {
 
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, upgradeList } = useContext(UserContext);
 
   function upgradeItem(item) {
     console.log({ item });
@@ -15,11 +15,10 @@ export default function UpgradeList(props) {
     setUser({ ...user, passive_items: [...user.passive_items, item] });
   }
 
-    //useMemo
   return (
     <List className="list-container">
       {
-        props.passiveItems.map((item) => {
+        upgradeList.map((item) => {
           return (
             <Tooltip title={item.flavour} >
               <ListItem button component="a" className="list-item" onClick={(event) => { upgradeItem(item._id) }}>
@@ -31,6 +30,7 @@ export default function UpgradeList(props) {
                 <ListItemText
                   primary={item.name}
                 />
+                {item.count}
               </ListItem>
             </Tooltip>
           )
