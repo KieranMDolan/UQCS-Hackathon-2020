@@ -14,11 +14,6 @@ const bodySrc = `${SERVER}images/body.png`
 const songSrc = `${SERVER}/music.ogg`;
 const passiveURL = `${SERVER}resources/passive_items`;
 
-
-
-
-
-
 function App() {
   const socketRef = useRef(null);
   const [user, setUser] = useState(null);
@@ -93,7 +88,7 @@ function App() {
 
         <div className="list-container">
           <h2>Upgrades</h2>
-          <UpgradeList socket={socketRef} />
+          <UpgradeList socket={socketRef} passiveItems={passiveItems}/>
         </div>
       </div>
     </UserContext.Provider>
