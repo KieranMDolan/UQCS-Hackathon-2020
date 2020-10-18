@@ -95,13 +95,13 @@ function App() {
             src={songSrc}
             autoPlay
           />
-          <h2 className="now-playing">Now playing...</h2>
+          <h2 className="now-playing">Now playing</h2>
           <div className="skill-container">
             <h3>Skills</h3>
-            <button className="skill-button">Count up bby</button>
-            <button className="skill-button">Count up bby</button>
-            <button className="skill-button">Count up bby</button>
-            <button className="skill-button">Count up bby</button>
+            <button className="skill-button">Defibrillator</button>
+            <button className="skill-button">Buffet</button>
+            <button className="skill-button">Sugar Rush</button>
+            <button className="skill-button">Pacemaker</button>
           </div>
 
         </div>
