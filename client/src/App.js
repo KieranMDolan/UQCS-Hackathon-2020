@@ -45,12 +45,23 @@ function App() {
   }, []);
 
   const providerValue = useMemo(() => {
+    let sumItems = [];
+    if (user) {
+      sumItems = passiveItems.reduce((acc, curr) => {
+        const id = curr._id;
+        console.log(id);
+        const itemCount = user.passive_items.reduce((sum, item) => (item===id) ? sum+1: sum, 0);
+        console.log(itemCount);
+        acc[curr._id] = itemCount;
+        return acc;
+      }, {});
+    }
     return {
       user,
       setUser,
-      upgradeList: null
-  }
-  }, [user, setUser]); //Only recomputes as object when logintoken or setLogintoken change
+      upgradeList: sumItems
+    }
+  }, [user, setUser, passiveItems, setPassiveItems]); //Only recomputes as object when logintoken or setLogintoken change
 
   return (
     <UserContext.Provider value={providerValue}>
@@ -88,7 +99,7 @@ function App() {
 
         <div className="list-container">
           <h2>Upgrades</h2>
-          <UpgradeList socket={socketRef} passiveItems={passiveItems}/>
+          <UpgradeList socket={socketRef} passiveItems={passiveItems} />
         </div>
       </div>
     </UserContext.Provider>

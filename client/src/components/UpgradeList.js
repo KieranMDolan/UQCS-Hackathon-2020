@@ -12,7 +12,7 @@ export default function UpgradeList(props) {
   function upgradeItem(item) {
     console.log({ item });
     props.socket.current.emit("buy", { _id: user._id, item });
-    setUser({ ...user, passive_items: [...user.passiveItems, item] });
+    setUser({ ...user, passive_items: [...user.passive_items, item] });
   }
 
 
