@@ -8,6 +8,16 @@
         "name": "Defibrillator",
         "flavour": "Jumpstart the day",
         "initial_cost": 50000
+    },
+    {
+        "name": "Sugar Rush",
+        "flavour": "Jumpstart the day",
+        "initial_cost": 50000
+    },
+    {
+        "name": "Pace Maker",
+        "flavour": "Jumpstart the day",
+        "initial_cost": 50000
     }
 
 ]

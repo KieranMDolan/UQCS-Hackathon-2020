@@ -41,6 +41,13 @@
   position: absolute;
 }
 
+.upgrades-container {
+  display:flex;
+  flex-direction:column;
+  right:10vw;
+  position:absolute;
+}
+
 .skill-button {
   padding: 10px 40px;
 }
