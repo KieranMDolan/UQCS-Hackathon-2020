@@ -84,6 +84,7 @@ function App() {
           />
           <h1>{joules}JOULES</h1>
           <h2 className="bpm">BPM</h2>
+          <h3>x{score.comboCount}</h3>
         </div>
 
         <div className="list-container">
