@@ -52,6 +52,9 @@ function App() {
 
       <div className="list-container">
         <UpgradeList />
+        <button>
+          Sync
+        </button>
       </div>
     </div>
   );
