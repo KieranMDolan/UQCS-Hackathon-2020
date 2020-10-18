@@ -9,7 +9,7 @@ const helmet = require("helmet");
 const path = require('path');
 const PORT = process.env.PORT || 3001;
 
-const MongoClient = require('mongodb').MongoClient;
+const {MongoClient, ObjectId} = require('mongodb');
 const CONNECTION_STRING = process.env.MONGO_URL;
 let db;
 MongoClient.connect(CONNECTION_STRING, {
@@ -38,9 +38,10 @@ app.get('/api', async(req, res)=> {
 
 app.get('/resources/passive_items', async (req, res)=> {
     const result = await db.collection("passive_items").find({}).toArray();
-    console.log(result);
     return res.json(result);
 });
+
+// app.get('')
 
 io.on('connection', (socket) => {
     console.log('a user connected');
@@ -59,8 +60,11 @@ io.on('connection', (socket) => {
             });
             console.log(newUser);
         }
+        socket.emit('initial', user);
         socket.on('buy', async (payload)=> {
-            const user = await db.collection("users").updateOne({_id:payload._id}, {$push: {item: payload.item}});
+            console.log(payload);
+            const result = await db.collection("users").updateOne({_id:ObjectId(payload._id)}, {$push: {passive_items: payload.item}});
+            //console.log(result);
         });
         socket.on('update', async (payload)=> {
             db.collection("users").find({id:payload._id});

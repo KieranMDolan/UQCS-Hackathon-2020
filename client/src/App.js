@@ -1,51 +1,61 @@
 
 import { SERVER } from 'appconstants';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import './App.css';
 import Main from './components/main/Main';
 import UpgradeList from './components/UpgradeList';
 import socketIOClient from "socket.io-client";
 // const skillURL = `${SERVER}/resources/skill_items`;
 // const prestigeURL = `${SERVER}/resources/prestige_items`;
+import UserContext from './components/UserContext';
 const bodySrc = `${SERVER}images/body.png`
+
+
 
 function App() {
   const socketRef = useRef(null);
-  useEffect(()=> {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
     socketRef.current = socketIOClient(SERVER);
     const sock = socketRef.current;
+    sock.on('initial', (user) => {
+      console.log(user);
+      setUser(user);
+    });
     sock.emit('login', "anhad");
   }, []);
 
+  const providerValue = useMemo(()=> {return {user, setUser}}, [user, setUser]); //Only recomputes as object when logintoken or setLogintoken change
+
   return (
+    <UserContext.Provider value={providerValue}>
+      <div className="App">
+        <img className="body" src={bodySrc} />
 
-    <div className="App">
-      <img className="body" src={bodySrc} />
+        <div className="playing-container">
+          <h2 className="now-playing">Now playing...</h2>
+          <div className="skill-container">
+            <h3>Skills</h3>
+            <button className="skill-button">Count up bby</button>
+            <button className="skill-button">Count up bby</button>
+            <button className="skill-button">Count up bby</button>
+            <button className="skill-button">Count up bby</button>
+          </div>
 
-      <div className="playing-container">
-        <h2 className="now-playing">Now playing...</h2>
-        <div className="skill-container">
-          <h3>Skills</h3>
-          <button className="skill-button">Count up bby</button>
-          <button className="skill-button">Count up bby</button>
-          <button className="skill-button">Count up bby</button>
-          <button className="skill-button">Count up bby</button>
         </div>
 
+        <div className="game-container">
+          <Main />
+          <h2 className="bpm">BPM</h2>
+        </div>
+
+        <div className="list-container">
+          <h2>Upgrades</h2>
+          <UpgradeList socket={socketRef} />
+        </div>
       </div>
-
-      <div className="game-container">
-        <Main />
-        <h2 className="bpm">BPM</h2>
-      </div>
-
-      <div className="list-container">
-        <h2>Upgrades</h2>
-        <UpgradeList socket={socketRef}/>
-
-      </div>
-
-    </div>
+    </UserContext.Provider>
   );
 }
 

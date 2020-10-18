@@ -1,18 +1,19 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Avatar, List, ListItem, ListItemAvatar, ServerStyleSheets } from '@material-ui/core';
+import { Avatar, List, ListItem, ListItemAvatar } from '@material-ui/core';
 import ListItemText from '@material-ui/core/ListItemText';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
+import React, { useContext, useEffect, useState } from 'react';
 import { SERVER } from '../appconstants';
+import UserContext from './UserContext';
 const passiveURL = `${SERVER}resources/passive_items`;
-
-// for retrieving items
-
 
 export default function UpgradeList(props) {
 
+  const { user, setUser } = useContext(UserContext);
+
   function upgradeItem(item) {
     console.log({ item });
-    props.socket.current.emit("buy");
+    props.socket.current.emit("buy", {_id: user._id, item});
+    setUser({...user, passive_items: [...passiveItems, item]});
   }
   const [passiveItems, setPassiveItems] = useState([]);
   useEffect(() => {
@@ -22,8 +23,6 @@ export default function UpgradeList(props) {
       setPassiveItems(json);
     })();
   }, []);
-
-
 
   //useMemo
   return (
