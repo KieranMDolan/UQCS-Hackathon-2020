@@ -83,12 +83,12 @@ function App() {
             joules={joules}
             setJoules={setJoules}
           />
-          <h1>{joules}JOULES</h1>
+          
           <h2 className="bpm">{score.combo}</h2>
-
-          <h2 className="bpm">{score.comboCount}</h2>
+          <h2 className="bpm">x{score.comboCount}</h2>
+          <h1>{joules}JOULES</h1>
+          
           <h2 className="bpm">BPM</h2>
-          <h3>x{score.comboCount}</h3>
         </div>
 
         <div className="list-container">
