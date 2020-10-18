@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import heartImageSrc from '../../assets/heart.png';
-import { useKeyPress } from '../../hooks/useKeyPress';
 
 // load image for heart
 let heartImage = new Image();
@@ -24,14 +23,14 @@ const screenWH = { width: canvasWidth, height: canvasHeight };
 const START_RANGE = canvasHeight / 2 - SCALE * HEART_OFFSET_Y;
 const END_RANGE = canvasHeight / 2 + SCALE * HEART_OFFSET_Y;
 
-// scoring variables
-export let score = {
-  comboCount: 0,
-  comboMax: 30,
-  scoreFactor: 1,
-  baseScore: 1,
-  score: 0
-}
+// // scoring variables
+// let score = {
+//   comboCount: 0,
+//   comboMax: 30,
+//   scoreFactor: 1,
+//   baseScore: 1,
+//   score: 0
+// }
 
 // helper random function
 function randomIntFromInterval(min, max) {
@@ -54,8 +53,7 @@ const getBeatsArr = () => {
 let beatCoordsArr = getBeatsArr();
 let TRACKED_INDEX = beatCoordsArr.length - 1;
 
-const Main = () => {
-  let spacePressed = useKeyPress(' ');
+const Main = (props) => {
   const canvasRef = useRef(null);
 
   // game loop functionality
@@ -71,8 +69,8 @@ const Main = () => {
       // loop through coords and draw beats
       drawBeats();
       // draw combo count
-      drawComboCount();
-      drawScore();
+      // drawComboCount();
+      // drawScore();
     }
 
     function drawHeart() {
@@ -96,22 +94,17 @@ const Main = () => {
     function drawComboCount() {
       ctx.font = '48px Verdana';
       ctx.fillText(
-        'x' + score.comboCount,
+        'x' + props.score.comboCount,
         canvasWidth / 2 + SCALE * HEART_OFFSET_X - 30,
         canvasHeight / 2 - SCALE * HEART_OFFSET_Y + 30
       );
-    }
-
-    function drawScore() {
-      ctx.font = '64px Verdana';
-      ctx.fillText(score.score, canvasWidth / 2, 100);
     }
 
     function update() {
       beatCoordsArr.forEach((beat) => {
         beat.y += INCREMENT_SIZE;
         if (beat.y > END_RANGE && beat.hittable) {
-          score.comboCount = 0;
+          props.setScore({ ...props.score, comboCount: 0})
           beat.hittable = false;
           TRACKED_INDEX--;
         }
@@ -134,17 +127,17 @@ const Main = () => {
 
   const increaseScore = () => {
     let toAdd;
-    if (score.comboCount === 0) {
-      toAdd = score.baseScore * score.scoreFactor;
+    if (props.score.comboCount === 0) {
+      toAdd = props.score.baseScore * props.score.scoreFactor;
     } else {
-      toAdd = score.baseScore * score.scoreFactor * score.comboCount;
+      toAdd = props.score.baseScore * props.score.scoreFactor * props.score.comboCount;
     }
-    score.score += toAdd;
+    props.setJoules(props.joules + toAdd);
   };
 
   const increaseComboCount = () => {
-    if (score.comboCount < score.comboMax) {
-      score.comboCount++;
+    if (props.score.comboCount < props.score.comboMax) {
+      props.setScore({...props.score, comboCount: props.score.comboCount + 1});
     }
   }
 
@@ -159,7 +152,7 @@ const Main = () => {
         beatCoordsArr[TRACKED_INDEX].hittable = false;
         TRACKED_INDEX--;
       } else {
-        score.comboCount = 0;
+        props.setScore({ ...props.score, comboCount: 0});
       }
     }
   };
