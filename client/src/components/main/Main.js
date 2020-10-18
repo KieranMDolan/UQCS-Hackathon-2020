@@ -18,7 +18,7 @@ let INCREMENT_SIZE = 4;
 
 // Canvas constants
 const canvasWidth = window.innerWidth / 2;
-const canvasHeight = window.innerHeight / 1.2;
+const canvasHeight = window.innerHeight / 1.4;
 const screenWH = { width: canvasWidth, height: canvasHeight };
 
 // scoring range constants

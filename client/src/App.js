@@ -11,6 +11,7 @@ import ReactAudioPlayer from 'react-audio-player';
 // const prestigeURL = `${SERVER}/resources/prestige_items`;
 import UserContext from './components/UserContext';
 const bodySrc = `${SERVER}images/body.png`
+const hospitalSrc = `${SERVER}images/hospital.png`
 const songSrc = `${SERVER}/music.ogg`;
 const passiveURL = `${SERVER}resources/passive_items`;
 
@@ -93,14 +94,22 @@ function App() {
             joules={joules}
             setJoules={setJoules}
           />
+          
+          <h2 className="bpm">{score.combo}</h2>
+          <h2 className="bpm">x{score.comboCount}</h2>
           <h1>{joules}JOULES</h1>
+          
           <h2 className="bpm">BPM</h2>
         </div>
 
         <div className="list-container">
           <h2>Upgrades</h2>
           <UpgradeList socket={socketRef} passiveItems={passiveItems} />
+          <button>
+            Sync
+          </button>
         </div>
+
       </div>
     </UserContext.Provider>
   );

@@ -15,8 +15,7 @@ export default function UpgradeList(props) {
     setUser({ ...user, passive_items: [...user.passive_items, item] });
   }
 
-
-  //useMemo
+    //useMemo
   return (
     <List className="list-container">
       {
@@ -25,7 +24,7 @@ export default function UpgradeList(props) {
             <Tooltip title={item.flavour} >
               <ListItem button component="a" className="list-item" onClick={(event) => { upgradeItem(item._id) }}>
                 <ListItemAvatar>
-                  <Avatar>
+                  <Avatar src={`${SERVER}images/${item.image}`}>
                     <FastfoodIcon />
                   </Avatar>
                 </ListItemAvatar>
