@@ -46,7 +46,7 @@ function App() {
   }, []);
 
   const providerValue = useMemo(() => {
-    let sumItems = [];
+    let sumItems = {};
     if (user) {
       sumItems = passiveItems.reduce((acc, curr) => {
         const id = curr._id;
@@ -60,7 +60,11 @@ function App() {
     return {
       user,
       setUser,
-      upgradeList: sumItems
+      upgradeList: passiveItems.map((item)=> {
+        const newItem = {...item};
+        newItem.count = sumItems[newItem._id];
+        return newItem;
+      })
     }
   }, [user, setUser, passiveItems, setPassiveItems]); //Only recomputes as object when logintoken or setLogintoken change
 
