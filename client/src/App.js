@@ -41,6 +41,7 @@ function App() {
     sock.on('initial', (user) => {
       console.log(user);
       setUser(user);
+      setJoules(user.joules);
     });
     sock.emit('login', "anhad");
   }, []);
@@ -69,11 +70,18 @@ function App() {
   }, [user, setUser, passiveItems, setPassiveItems]); //Only recomputes as object when logintoken or setLogintoken change
 
   let joulesPerSecond = 0;
-  passiveItems.forEach((item) => {
-    console.log(item);
-    let temp = item.count * item.jps;
-    joulesPerSecond += temp;
-  });
+
+  if (user) {
+    const {upgradeList} = providerValue;
+    upgradeList.forEach((item) => {
+      console.log(item);
+      let temp = 0.02 * item.count * item.jps;
+      joulesPerSecond += temp;
+    });
+  }
+
+  // setInterval(() => {setJoules(Math.floor(joules + joulesPerSecond))}, 1000);
+ 
 
 
   return (
@@ -116,7 +124,7 @@ function App() {
 
         <div className="list-container">
           <h2>Upgrades</h2>
-          <UpgradeList socket={socketRef} passiveItems={passiveItems} />
+          <UpgradeList socket={socketRef} passiveItems={passiveItems} joules={joules}/>
 
         </div>
 

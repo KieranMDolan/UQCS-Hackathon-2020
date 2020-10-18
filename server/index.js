@@ -67,7 +67,10 @@ io.on('connection', (socket) => {
             //console.log(result);
         });
         socket.on('update', async (payload)=> {
-            db.collection("users").find({id:payload._id});
+            console.log({payload});
+            const id = payload._id;
+            delete payload._id;
+            await db.collection("users").updateOne({_id:ObjectId(id)},{$set: {...payload}}, {upsert: true});
         });
     });
 });
