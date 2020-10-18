@@ -69,6 +69,21 @@ function App() {
     }
   }, [user, setUser, passiveItems, setPassiveItems]); //Only recomputes as object when logintoken or setLogintoken change
 
+  let joulesPerSecond = 0;
+
+  if (user) {
+    const {upgradeList} = providerValue;
+    upgradeList.forEach((item) => {
+      console.log(item);
+      let temp = 0.02 * item.count * item.jps;
+      joulesPerSecond += temp;
+    });
+  }
+
+  // setInterval(() => {setJoules(Math.floor(joules + joulesPerSecond))}, 1000);
+ 
+
+
   return (
     <UserContext.Provider value={providerValue}>
       <div className="App">
@@ -81,13 +96,13 @@ function App() {
             src={songSrc}
             autoPlay
           />
-          <h2 className="now-playing">Now playing...</h2>
+          <h2 className="now-playing">Now playing</h2>
           <div className="skill-container">
             <h3>Skills</h3>
-            <button className="skill-button">Count up bby</button>
-            <button className="skill-button">Count up bby</button>
-            <button className="skill-button">Count up bby</button>
-            <button className="skill-button">Count up bby</button>
+            <button className="skill-button">Defibrillator</button>
+            <button className="skill-button">Buffet</button>
+            <button className="skill-button">Sugar Rush</button>
+            <button className="skill-button">Pacemaker</button>
           </div>
 
         </div>
@@ -100,7 +115,7 @@ function App() {
             setJoules={setJoules}
           />
           
-          <h2 className="bpm">{score.combo}</h2>
+          <h2 className="bpm">{joulesPerSecond}J/s</h2>
           <h2 className="bpm">x{score.comboCount}</h2>
           <h1>{joules}JOULES</h1>
           

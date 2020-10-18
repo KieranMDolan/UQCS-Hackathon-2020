@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState, useContext } from 'react';
-import { Tooltip, Avatar, List, ListItem, ListItemAvatar, ServerStyleSheets } from '@material-ui/core';
+import { Tooltip, Avatar, List, ListItem, ListItemAvatar, Typography } from '@material-ui/core';
 import ListItemText from '@material-ui/core/ListItemText';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import { SERVER } from '../appconstants';
@@ -33,9 +33,11 @@ export default function UpgradeList(props) {
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={item.name}
+                  primary={<Typography>{item.name}</Typography>}
                 />
-                {item.count}
+                <Typography variant="h6">
+                [{item.count}]
+                </Typography>
               </ListItem>
             </Tooltip>
           )
