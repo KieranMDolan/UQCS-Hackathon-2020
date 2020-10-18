@@ -1,13 +1,17 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Avatar, List, ListItem, ListItemAvatar, ServerStyleSheets } from '@material-ui/core';
+import { Tooltip, Avatar, List, ListItem, ListItemAvatar, ServerStyleSheets } from '@material-ui/core';
 import ListItemText from '@material-ui/core/ListItemText';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import { SERVER } from '../appconstants';
+import '../App.css';
+
+
 const passiveURL = `${SERVER}resources/passive_items`;
+
 
 // for retrieving items
 function upgradeItem(item) {
-    console.log({item});
+    console.log({ item });
 }
 
 export default function UpgradeList() {
@@ -20,7 +24,7 @@ export default function UpgradeList() {
         })();
     }, []);
 
-    
+
 
     //useMemo
     return (
@@ -28,17 +32,19 @@ export default function UpgradeList() {
             {
                 passiveItems.map((item) => {
                     return (
-                        <ListItem button component="a" className="list-item" onClick={(event)=> {upgradeItem(item._id)}}>
-                            <ListItemAvatar>
-                                <Avatar>
-                                    <FastfoodIcon />
-                                </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={item.name}
-                                secondary={item.flavour}
-                            />
-                        </ListItem>
+                        <Tooltip title={item.flavour} >
+                            <ListItem button component="a" className="list-item" onClick={(event) => { upgradeItem(item._id) }}>
+                                <ListItemAvatar>
+                                    <Avatar>
+                                        <FastfoodIcon />
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={item.name}
+                                />
+                            </ListItem>
+                        </Tooltip>
+
                     )
                 })}
         </List>
