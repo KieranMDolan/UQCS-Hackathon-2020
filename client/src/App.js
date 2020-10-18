@@ -68,6 +68,14 @@ function App() {
     }
   }, [user, setUser, passiveItems, setPassiveItems]); //Only recomputes as object when logintoken or setLogintoken change
 
+  let joulesPerSecond = 0;
+  passiveItems.forEach((item) => {
+    console.log(item);
+    let temp = item.count * item.jps;
+    joulesPerSecond += temp;
+  });
+
+
   return (
     <UserContext.Provider value={providerValue}>
       <div className="App">
@@ -99,7 +107,7 @@ function App() {
             setJoules={setJoules}
           />
           
-          <h2 className="bpm">{score.combo}</h2>
+          <h2 className="bpm">{joulesPerSecond}J/s</h2>
           <h2 className="bpm">x{score.comboCount}</h2>
           <h1>{joules}JOULES</h1>
           
