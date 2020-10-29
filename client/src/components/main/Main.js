@@ -25,6 +25,8 @@ const screenWH = { width: canvasWidth, height: canvasHeight };
 const START_RANGE = canvasHeight / 2 - SCALE * HEART_OFFSET_Y;
 const END_RANGE = canvasHeight / 2 + SCALE * HEART_OFFSET_Y;
 
+const PI = Math.PI;
+
 // helper random function
 function randomIntFromInterval(min, max) {
   // min and max included
@@ -61,6 +63,8 @@ const Main = (props) => {
       drawHeart();
       // loop through coords and draw beats
       drawBeats();
+
+      drawSinc();
     }
 
     function drawHeart() {
@@ -81,11 +85,27 @@ const Main = (props) => {
       });
     }
 
+    function drawSinc() {
+      ctx.beginPath();
+      const samples = 200;
+      const samplingPeriod = 2 * PI / samples;
+      const SCALAR = 10;
+      let x = 0, y = 0;
+      for (let i = 0; i < samples; i++) {
+        ctx.moveTo(x * SCALAR, y * SCALAR); //Move to the last x,y pos
+        x = i * samplingPeriod;
+        y = Math.sin(x);//Goes from 0 to 1
+        ctx.lineTo(x * SCALAR, y * SCALAR);
+        ctx.stroke();
+      }
+      ctx.closePath();
+    }
+
     function update() {
       beatCoordsArr.forEach((beat) => {
         beat.y += INCREMENT_SIZE;
         if (beat.y > END_RANGE && beat.hittable) {
-          props.setScore({ ...props.score, comboCount: 0})
+          props.setScore({ ...props.score, comboCount: 0 })
           beat.hittable = false;
           TRACKED_INDEX--;
         }
@@ -102,7 +122,6 @@ const Main = (props) => {
       requestAnimationFrame(gameLoop);
       // ctx.restore();
     }
-
     gameLoop();
   }, []);
 
@@ -113,14 +132,14 @@ const Main = (props) => {
     } else {
       toAdd = props.score.baseScore * props.score.scoreFactor * props.score.comboCount;
     }
-    console.log({toAdd});
-    props.setJoules(prevjoules=>prevjoules + toAdd);
+    console.log({ toAdd });
+    props.setJoules(prevjoules => prevjoules + toAdd);
   };
 
   const increaseComboCount = () => {
-    if (props.score.comboCount < props.score.comboMax) {
-      props.setScore({...props.score, comboCount: props.score.comboCount + 1});
-    }
+    props.setScore(prevScore => {
+      return (prevScore.comboCount < prevScore.comboMax) ? { ...prevScore, comboCount: prevScore.comboCount + 1 } : null //React 16 allows no state update if null returned
+    });
   }
 
   const handleKeyPress = (event) => {
@@ -137,7 +156,7 @@ const Main = (props) => {
         beatCoordsArr[TRACKED_INDEX].hittable = false;
         TRACKED_INDEX--;
       } else {
-        props.setScore({ ...props.score, comboCount: 0});
+        props.setScore({ ...props.score, comboCount: 0 });
       }
     }
   };
@@ -149,7 +168,7 @@ const Main = (props) => {
       width={canvasWidth}
       height={canvasHeight}
       tabIndex={0}
-      // onKeyPress={handleKeyPress}
+    // onKeyPress={handleKeyPress}
     />
   );
 };

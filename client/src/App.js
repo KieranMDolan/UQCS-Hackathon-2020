@@ -1,5 +1,5 @@
 
-import { SERVER } from './appconstants';
+import { SERVER, formatNumber } from './appconstants';
 import React, { useRef, useEffect, useState, useMemo, useCallback } from 'react';
 import './App.css';
 import Main from './components/main/Main';
@@ -44,7 +44,7 @@ function App() {
       return newItem;
     });
     const totalJps = upgradeList.reduce((acc, curr) => acc + curr.count * curr.jps, 0);
-    console.log({totalJps});
+    console.log({ totalJps });
     return {
       user,
       setUser,
@@ -54,13 +54,13 @@ function App() {
   }, [user, setUser, passiveItems]); //Only recomputes as object when dependancies change
 
   const JPS = useRef(0);
-  useEffect(()=> {
+  useEffect(() => {
     JPS.current = !!providerValue.totalJps ? providerValue.totalJps : 0;
     // console.log(`Ressetting JPS: ${providerValue.totalJps} and ref: ${JPS.current}`);
   }, [providerValue]);
-  const updateJPS = ()=> {
+  const updateJPS = () => {
     // console.log(`runnning update ${JPS.current}`)
-    setJoules(prevJoules=>Math.floor(prevJoules + JPS.current));
+    setJoules(prevJoules => Math.floor(prevJoules + JPS.current));
   }
 
   // const updateJPS = useMemo(() => {
@@ -99,25 +99,6 @@ function App() {
       clearInterval(jpsTimer);
     }
   }, []);
-
-
-  var ranges = [
-    { divider: 1e18, suffix: 'E' },
-    { divider: 1e15, suffix: 'P' },
-    { divider: 1e12, suffix: 'T' },
-    { divider: 1e9, suffix: 'G' },
-    { divider: 1e6, suffix: 'M' },
-    { divider: 1e3, suffix: 'k' }
-  ];
-
-  function formatNumber(n) {
-    for (var i = 0; i < ranges.length; i++) {
-      if (n >= ranges[i].divider) {
-        return (n / ranges[i].divider).toString() + ranges[i].suffix;
-      }
-    }
-    return n.toString();
-  }
 
   // useEffect(() => {
   //   console.log("Function ran");
