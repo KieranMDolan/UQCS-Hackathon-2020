@@ -15,31 +15,34 @@ export default function UpgradeList(props) {
     setUser({ ...user, passive_items: [...user.passive_items, item] });
   }
   function handleSync() {
-    const newUser = {...user};
+    const newUser = { ...user };
     newUser.joules = props.joules;
-    props.socket.current.emit("update", newUser);  
+    props.socket.current.emit("update", newUser);
   }
 
   return (
     <List className="list-container">
       {
         upgradeList.map((item) => {
+          //Abstract out
           return (
-            <Tooltip title={item.flavour} >
-              <ListItem button component="a" className="list-item" onClick={(event) => { upgradeItem(item._id) }}>
-                <ListItemAvatar>
-                  <Avatar src={`${SERVER}images/${item.image}`}>
-                    <FastfoodIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={<Typography>{item.name}</Typography>}
-                />
-                <Typography variant="h6">
-                [{item.count}]
+            <div key={item._id}>
+              <Tooltip title={item.flavour} >
+                <ListItem button component="a" className="list-item" onClick={(event) => { upgradeItem(item._id) }}>
+                  <ListItemAvatar>
+                    <Avatar src={`${SERVER}images/${item.image}`}>
+                      <FastfoodIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={<Typography>{item.name}</Typography>}
+                  />
+                  <Typography variant="h6">
+                    [{item.count}]
                 </Typography>
-              </ListItem>
-            </Tooltip>
+                </ListItem>
+              </Tooltip>
+            </div>
           )
         })}
       <button onClick={handleSync} className="buttons">

@@ -63,7 +63,7 @@ export function useCanvas() {
     });
 
     incrementBeats();
-  });
+  }, []);
 
   return [coordinates, setCoordinates, canvasRef, canvasWidth, canvasHeight];
 }

@@ -8,6 +8,8 @@
   flex-direction: row;
   background-image: url("https://image.freepik.com/free-photo/blur-hospital_1203-7972.jpg");
   background-size: 100vw;
+  /* background-repeat: no-repeat; */
+  /* background-position: cover; */
 }
 
 .heart {

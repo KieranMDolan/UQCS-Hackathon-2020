@@ -51,11 +51,9 @@ const Main = (props) => {
 
   // game loop functionality
   useEffect(() => {
-    // document.addEventListener("keydown", handleKeyPress);
-    // console.log("Startup func");
+    document.addEventListener("keydown", handleKeyPress); //This is effectly an async action, occurs separate from reacts render loop, therefore, all setState operations must account for async updates
     const canvasObj = canvasRef.current;
     let ctx = canvasObj.getContext('2d');
-
     function draw() {
       // clear rectangle
       ctx.clearRect(0, 0, screenWH.width, screenWH.height);
@@ -63,9 +61,6 @@ const Main = (props) => {
       drawHeart();
       // loop through coords and draw beats
       drawBeats();
-      // draw combo count
-      // drawComboCount();
-      // drawScore();
     }
 
     function drawHeart() {
@@ -118,7 +113,8 @@ const Main = (props) => {
     } else {
       toAdd = props.score.baseScore * props.score.scoreFactor * props.score.comboCount;
     }
-    props.setJoules(props.joules + toAdd);
+    console.log({toAdd});
+    props.setJoules(prevjoules=>prevjoules + toAdd);
   };
 
   const increaseComboCount = () => {
@@ -128,7 +124,10 @@ const Main = (props) => {
   }
 
   const handleKeyPress = (event) => {
+    console.log("Handling press", event)
     if (event.key === ' ' && beatCoordsArr.length !== 0) {
+      event.preventDefault();
+      console.log("in press")
       let y = beatCoordsArr[TRACKED_INDEX].y;
       // change to tracked index
       if (y >= START_RANGE && y <= END_RANGE) {
@@ -149,9 +148,8 @@ const Main = (props) => {
       ref={canvasRef}
       width={canvasWidth}
       height={canvasHeight}
-      // onClick={handleCanvasClick}
       tabIndex={0}
-      onKeyPress={handleKeyPress}
+      // onKeyPress={handleKeyPress}
     />
   );
 };
