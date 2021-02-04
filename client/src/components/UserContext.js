@@ -1,4 +1,4 @@
 import { createContext } from "react";
 const UserContext = createContext(null);
-UserContext.displayName = "AdminContext";
+UserContext.displayName = "UserContext";
 export default UserContext;
