@@ -47,7 +47,7 @@ io.on('connection', (socket) => {
     console.log('a user connected');
     socket.on('login', async (name) => {
         console.log("Emit from ", name);
-        const user = await db.collection("users").findOne({ name });
+        let user = await db.collection("users").findOne({ name });
         if (!user) {
             console.log("No user found");
             const newUser = await db.collection("users").insertOne({
@@ -59,12 +59,17 @@ io.on('connection', (socket) => {
                 prestige: 0
             });
             console.log(newUser);
+            user = newUser.ops[0];
         }
         socket.emit('initial', user);
         socket.on('buy', async (payload) => {
             console.log(payload);
-            const result = await db.collection("users").updateOne({ _id: ObjectId(payload._id) }, { $push: { passive_items: payload.item } });
-            const user = await db.collection("users").findOne({ _id: ObjectId(payload._id) });
+            const { value: user } = await db.collection("users").findOneAndUpdate(
+                { _id: ObjectId(payload._id) },
+                { $push: { passive_items: payload.item } },
+                { returnOriginal: false }
+            );
+            console.log(user);
             socket.emit('confirmPurchase', user);
         });
         socket.on('update', async (payload) => {
