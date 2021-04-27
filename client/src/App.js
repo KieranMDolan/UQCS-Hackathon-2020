@@ -9,14 +9,16 @@ import ReactAudioPlayer from 'react-audio-player';
 
 
 import UserContext from './components/UserContext';
+import usePassiveItems from './hooks/usePassiveItems';
 const bodySrc = `${SERVER}images/body.png`
 const hospitalSrc = `${SERVER}images/hospital.png`
 const songSrc = `${SERVER}/music.ogg`;
-const passiveURL = `${SERVER}resources/passive_items`;
+
 
 function App() {
   const socketRef = useRef(null);
   const [user, setUser] = useState(null);
+  const passiveItems = usePassiveItems();
 
   const [score, setScore] = useState({
     comboCount: 0,
@@ -25,7 +27,7 @@ function App() {
     baseScore: 1,
   });
 
-  const [passiveItems, setPassiveItems] = useState([]);
+  
   const [joules, setJoules] = useState(0);
 
   const providerValue = useMemo(() => {
@@ -80,11 +82,6 @@ function App() {
   // };
 
   useEffect(() => {
-    (async () => {
-      const result = await fetch(passiveURL);
-      const json = await result.json();
-      setPassiveItems(json);
-    })();
     socketRef.current = socketIOClient(SERVER);
     const sock = socketRef.current;
     sock.on('initial', (user) => {

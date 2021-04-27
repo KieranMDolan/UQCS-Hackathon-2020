@@ -1,4 +1,4 @@
-export const SERVER = (process.env.NODE_ENV === "production") ? '/' : "http://localhost:3001/";
+export const SERVER = (process.env.NODE_ENV === "production") ? '/' : "http://localhost:3001/"; //window.location.origin
 export const COEFFICIENT = 1.15;
 export var ranges = [
     { divider: 1e18, suffix: 'E' },
