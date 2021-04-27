@@ -9,7 +9,7 @@ const helmet = require("helmet");
 const path = require('path');
 const PORT = process.env.PORT || 3001;
 
-const {MongoClient, ObjectId} = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const CONNECTION_STRING = process.env.MONGO_URL;
 let db;
 MongoClient.connect(CONNECTION_STRING, {
@@ -29,14 +29,14 @@ app.use(express.static(__dirname + '/public')); //Serves resources from public f
 
 app.get('/', (req, res) => {
     //res.sendFile(path.join(__dirname+'/../client/build/index.html'));
-    res.json({message:"this the api"});
+    res.json({ message: "this the api" });
 })
 
-app.get('/api', async(req, res)=> {
-    res.json({message: "PINGING ✔"});
+app.get('/api', async (req, res) => {
+    res.json({ message: "PINGING ✔" });
 });
 
-app.get('/resources/passive_items', async (req, res)=> {
+app.get('/resources/passive_items', async (req, res) => {
     const result = await db.collection("passive_items").find({}).toArray();
     return res.json(result);
 });
@@ -47,30 +47,36 @@ io.on('connection', (socket) => {
     console.log('a user connected');
     socket.on('login', async (name) => {
         console.log("Emit from ", name);
-        const user = await db.collection("users").findOne({name});
+        let user = await db.collection("users").findOne({ name });
         if (!user) {
             console.log("No user found");
             const newUser = await db.collection("users").insertOne({
                 name,
-                joules: 1, 
-                passive_items: [], 
-                max_combo: 0, 
+                joules: 1,
+                passive_items: [],
+                max_combo: 0,
                 skill_items: [],
-                prestige: 0 
+                prestige: 0
             });
             console.log(newUser);
+            user = newUser.ops[0];
         }
         socket.emit('initial', user);
-        socket.on('buy', async (payload)=> {
+        socket.on('buy', async (payload) => {
             console.log(payload);
-            const result = await db.collection("users").updateOne({_id:ObjectId(payload._id)}, {$push: {passive_items: payload.item}});
-            //console.log(result);
+            const { value: user } = await db.collection("users").findOneAndUpdate(
+                { _id: ObjectId(payload._id) },
+                { $push: { passive_items: payload.item } },
+                { returnOriginal: false }
+            );
+            console.log(user);
+            socket.emit('confirmPurchase', user);
         });
-        socket.on('update', async (payload)=> {
-            console.log({payload});
+        socket.on('update', async (payload) => {
+            console.log({ payload });
             const id = payload._id;
             delete payload._id;
-            await db.collection("users").updateOne({_id:ObjectId(id)},{$set: {...payload}}, {upsert: true});
+            await db.collection("users").updateOne({ _id: ObjectId(id) }, { $set: { ...payload } }, { upsert: true });
         });
     });
 });
